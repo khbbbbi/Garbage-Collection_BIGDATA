@@ -1,28 +1,42 @@
 # -가비지 컬렉션 (Garbage Collection)-
 ## 목차
 #### 1. 가비지 컬렉션이란?
+#### 2. 자바에서의 가비지 컬렉션
+(1) JVM(Java Virtual Machine)<br>
+(2) 자바에서의 GC
+
+<br>
+
 ## 1. 가비지 컬렉션이란?
-### (1) 정의 
 - 가비지 컬렉션(Garbage Collection, GC) 말 그대로 쓰레기 수집이란 뜻으로 메모리 관리 기법 중 하나이다.<br>
-- 가비지(Garbage)는 앞으로 사용되지 않는 객체의 메모리를 말한다. 이런 가비지(Garbage)를 정해진 스케줄에 의해 정리해주는 것을 가비지 컬렉션(Garbage Collection, GC)이라 부른다.
-### (2) 자바(Java)에서의 GC
-- 자바의 메모리 관리 기법으로 어플리케이션이 동적으로 할당했던 메모리 영역 중 더이상 사용하지 않는 영역을 정리하는 기능
-- GC는 Heap 메모리에서 활동하며, JVM(자바 메모리 구조)에서 GC의 스케줄링을 담당하며 개발자가 직접 관여하지 않아도 더이상 사용되지 않는 점유된 메모리를 제거해주는 역할을 담당
- 
- - JVM(자바 메모리 구조)
-<p align = "center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/514d4f80-c06f-4b90-853c-4c5443647c17" width="80%"></p>
- - Execution Engine에 가비지 컬렉터가 존재한다.
- 가비지 컬렉터
- - 더이상 참조되지 않는 메모리 객체를 모아 제거하는 역할을 수행
- - 일반적으로 자동으로 실행, 수동으로 실행하기 위해 system.gc()를 사용할 수 있음(but 안쓰는게 베스트)
+- 가비지(Garbage)는 앞으로 사용되지 않는 객체의 메모리를 말한다. 이런 가비지(Garbage)를 정해진 스케줄에 의해 정리해주는 것을 가비지 컬렉션(Garbage Collection, GC)이라 부른다.<br>
+<br>
+
+
+## 2. 자바에서의 가비지 컬렉션
+### (1) JVM(Java Virtual Machine)
+자바에서의 GC를 알아보기 전에 JVM(자바 가상 머신)에 대해 먼저 알아보자!<br>
+- JVM은 자바 프로그램 실행 환경을 만들어 주는 소프트웨어이다. 자바 코드를 컴파일하여 .class 바이트 코드로 만들면 이 코드가 자바 가상 머신 환경에서 실행된다.<br>
+- JVM을 사용하면 하나의 바이트 코드(.class)로 모든 플랫폼에서 동작하도록 할 수 있다.
+- JVM의 구조
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/69e382b5-867e-409a-a03a-48d52c055a0e" width="80%"></p>
+<br>
+
+### (2) 자바에서의 GC
+- JVM(자바 가상 머신)의 Heap 영역에서 <b>동적으로 할당했던 메모리 영역 중 필요 없게 된 메모리 영역을 주기적으로 삭제하는 프로세스</b>를 말한다.
+- <장점><br>
+C++에서는 이러한 가비지 컬렉션이 없어 수동으로 메모리 할당과 해제를 일일이 해줘야 하는 반면, <b>Java는 JVM에 탑재되어 있는 가비지 컬렉터가 메모리 관리를 대행</b>해주기 때문에 개발자 입장에서 메모리 관리, 메모리 누수 문제에서 대해 완벽하게 관리하지 않아도 된다는 장점이 있다.
+- <단점><br>
+메모리가 언제 해제되는지 정확하게 알 수 없다는 것과 <b>GC가 동작되는 동안에는 다른 동작을 멈추기 때문에 오버헤드가 발생한다</b>는 단점이 있다. <br>오버헤드의 발생 문제로 인해 GC가 너무 자주 실행되면 소프트웨어 성능 하락의 문제가 되기도 한다. 그래서 실시간으로 계속 동작해주어야 하는 시스템 사용에는 적합하지 않다.
+
+
+## 2. 가비지 컬렉션 장단점
  
 GC 에 대해 조사
 왜 필요하고, 어떤 매커니즘으로 동작되는지 (본인이 확실히 이해한 내용을 기술)
 GC 가 제대로 동작되도록 코드를 어떻게 작성해야 하는지, 어떻게 하면 GC 로도 메모리 leak 이 발생되는지 예제 코드와 함께 설명
 - 언어는 Python, Java, JavaScript, C# 중 택1
 
-> 출처
-> https://mangkyu.tistory.com/118
-> https://www.youtube.com/watch?v=jXF4qbZQnBc
-> https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
-> https://ko.wikipedia.org/wiki/%EC%93%B0%EB%A0%88%EA%B8%B0_%EC%88%98%EC%A7%91_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)
+> [ 출처 ]<br>
+> 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>
+> 티스토리 : <a href = "https://coding-factory.tistory.com/829">[Java] 가비지 컬렉션(GC, Garbage Collection) 총정리</a><br>

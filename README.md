@@ -2,8 +2,8 @@
 ## 목차
 #### 1. 가비지 컬렉션이란?
 #### 2. 자바에서의 가비지 컬렉션
-(1) JVM(Java Virtual Machine)<br>
-(2) 자바에서의 GC
+ (1) JVM(Java Virtual Machine)<br>
+ (2) 자바에서의 GC
 
 <br>
 

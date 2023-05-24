@@ -11,8 +11,8 @@
  (2) Minor GC 과정<br>
  (3) Major GC 과정<br>
  (4) 일반적인 GC 과정<br>
-#### 3. 가비지 컬렉션(GC) 올바른 동작 코드
-#### 4. 가비지 컬렉션(GC) 메모리 누수(Memory Leak)
+#### 3. 가비지 컬렉션(GC) 메모리 누수(Memory Leak)
+#### 4. 가비지 컬렉션(GC)
 <br>
 
 ## 1. 가비지 컬렉션(GC)이란?
@@ -212,8 +212,110 @@ Old Generation의 객체들은 거슬러 올라가면 처음에는 Young Generat
 
 <br>
 
-## 3. 가비지 컬렉션(GC) 알고리즘
-1. R
+## 3. 가비지 컬렉션(GC) 메모리 누수(Memory Leak)
+자바에서의 메모리 누수란 위에서도 말했듯 더 이상 사용되지 않는 객체들이 가비지 컬렉터에 의해 회수되지 않고 계속 누적이 되는 현상을 말한다.<br>
+Old 영역에 계속 누적된 객체로 인해 Major GC가 빈번하게 발생하게 되면서, 프로그램 응답속도가 늦어지면서 성능 저하를 불러온다. 이는 결국 OutOfMemory Error로 프로그램이 종료되게 된다.<br>
+<br>
+### < 메모리 누수가 발생하는 패턴 >
+<b>1. 무의미한 Wrapper 객체를 생성하는 경우</b><br>
+GC는 Immutable 객체를 Skip한다. 컨테이너 자체가 사라질 때 같이 삭제한다.<br>
+그래서 String은 StringBuilder와 달리 Immutable 객체이기 때문에 힙에 계속 쌓여서 메모리를 점유한다는 단점이 있다.
+Wrapper class의 객체는 모두 Immutable이기 때문에 조심해서 사용해야 한다.
+<br><br>
+<b>2. Map에 Immutable 데이터를 해제하지 않은 경우</b><br>
+Map에는 강력한 참조가 있어서, 내부 객체가 사용되지 않을 때도 GC 대상이 되지 않는다.<br> Map을 더이상 사용하지 않는다면, 메모리를 점유하고 있게 된다. 즉, 데이터의 메모리를 해제하는 것이 바람직합니다. WeakHashMap은 내부 데이터를 초기화할 수 있다.
+<br><br>
+<b>3. Connection 사용 시 Try Catch 설계</b><br>
+아래의 경우 Connection을 생성했지만, try 내부에서 connection을 close하기 때문에, close가 실행되지 못한다.
+그래서 Connection이 열려있는 채로 메모리를 점유하게 된다.<br>
+
+```java
+try {
+    Connection con = DriverManager.getConnection();
+    // 예외 발생 !!!
+    con.close();
+} Catch(exception e) {
+}
+```
+<br><br>
+<b>4. CustomKey 사용</b><br>
+Map을 사용할 때 custom key를 사용할 때는 equals()와 hashcode()를 값을 기반으로 구현해야 한다. 아래의 경우 Key값이 같은 객체로 인식하지 못해서 계속 Map에 쌓이게 되면서 메모리를 점유하게 된다.<br>
+
+```java
+public class CustomKey {
+    private String name;
+    
+    public CustomKey(String name) {
+        this.name=name;
+    }
+    
+    public staticvoid main(String[] args) {
+        Map<CustomKey,String> map = new HashMap<CustomKey,String>();
+        map.put(new CustomKey("Shamik"), "Shamik Mitra");
+   }
+}
+```
+<br><br>
+<b>5. 더 이상 참조되지 않는 참조 (자료 구조 설계)</b><br>
+배열로 Stack을 구현한 예시<br>
+
+```java
+public class Stack {
+       privateint maxSize;
+       privateint[] stackArray;
+       privateint pointer;
+       public Stack(int s) {
+              maxSize = s;
+              stackArray = newint[maxSize];
+              pointer = -1;
+       }
+       public void push(int j) {
+              stackArray[++pointer] = j;
+       }
+       public int pop() {
+              return stackArray[pointer--];
+       }
+       public int peek() {
+              return stackArray[pointer];
+       }
+       publicboolean isEmpty() {
+              return (pointer == -1);
+       }
+       public boolean isFull() {
+              return (pointer == maxSize - 1);
+       }
+       public static void main(String[] args) {
+              Stack stack = new Stack(1000);
+              for(int ;i<1000;i++)
+              {
+                     stack.push(i);
+              }
+              for(int ;i<1000;i++)
+              {
+                     int element = stack.pop();
+                     System.out.println("Poped element is "+ element);
+              }
+       }
+}
+```
+
+<br>
+pop을 할 때 포인터만 감소하고 실제 데이터는 그대로 남아있다.<br> 
+알고리즘상 문제는 없지만, 배열에 해당 요소가 존재하기 때문에 GC의 대상이 될 수 없고, 사용하지 않는 요소들을 포함한 배열이 메모리에 남게 된다.
+<br>
+위의 경우 pop()을 할 때 해당 배열 요소 또한 삭제해주어야 한다.
+<br>
+
+```java
+public int pop() {
+    int size = pointer--;
+    int element = stackArray[size];
+    stackArray[size] = null;
+    return element;
+}
+```
+
+
 
 > [ 출처 ]<br>
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>

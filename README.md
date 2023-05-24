@@ -66,22 +66,15 @@ GC 대상 객체를 식별(Mark)하고 제거(Sweep)하며 객체가 제거되�
  - Sweep 과정 : 참조하고 있지 않은 객체 즉 Unreachable 객체들을 Heap에서 제거한다.
  - Compact 과정 : Sweep 후에 분산된 객체들을 Heap의 시작 주소로 모아 메모리가 할당된 부분과 그렇지 않은 부분으로 압축한다. (가비지 컬렉터 종류에 따라 하지 않는 경우도 있다.)
 <br>
-
-<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/0d1073a0-cf6e-4fa4-b29f-929bc0b84420" width="70%"></p><br>
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/a2886ba9-428a-430c-a153-bd9af4230698" width = "70%"></p>
 
 <br>
 
-![image](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/7cba337e-d071-4d06-a89c-26298a1d8e3c)
-
-![image](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/087f48af-259c-44b6-810d-d1caca05f126)
+## 2. 가비지 컬렉션 동작 과정
 
 
-## 2. 가비지 컬렉션 장단점
- 
-GC 에 대해 조사
-왜 필요하고, 어떤 매커니즘으로 동작되는지 (본인이 확실히 이해한 내용을 기술)
-GC 가 제대로 동작되도록 코드를 어떻게 작성해야 하는지, 어떻게 하면 GC 로도 메모리 leak 이 발생되는지 예제 코드와 함께 설명
-- 언어는 Python, Java, JavaScript, C# 중 택1
+
+<br>
 
 > [ 출처 ]<br>
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>

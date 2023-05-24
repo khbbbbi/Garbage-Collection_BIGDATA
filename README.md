@@ -1,4 +1,4 @@
-# -가비지 컬렉션 (Garbage Collection)-
+# -가비지 컬렉션(Garbage Collection) in Java-
 ## 목차
 #### 1. 가비지 컬렉션이란?
 #### 2. 자바에서의 가비지 컬렉션

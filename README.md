@@ -3,7 +3,7 @@
 #### 1. 가비지 컬렉션(GC)이란?
  (1) 정의<br>
  (2) 장단점<br>
- (3) 필요성<br>
+ (3) 필요성<br>
  (4) 가비지 컬렉션(GC) 대상<br>
  (5) 가비지 컬렉션(GC) 청소 방식(메커니즘)<br>
 #### 2. 가비지 컬렉션(GC) 동작 과정
@@ -221,10 +221,10 @@ Old 영역에 계속 누적된 객체로 인해 Major GC가 빈번하게 발생�
 GC는 Immutable 객체를 Skip한다. 컨테이너 자체가 사라질 때 같이 삭제한다.<br>
 그래서 String은 StringBuilder와 달리 Immutable 객체이기 때문에 힙에 계속 쌓여서 메모리를 점유한다는 단점이 있다.
 Wrapper class의 객체는 모두 Immutable이기 때문에 조심해서 사용해야 한다.
-<br><br>
+<br><br><br>
 <b>2. Map에 Immutable 데이터를 해제하지 않은 경우</b><br>
 Map에는 강력한 참조가 있어서, 내부 객체가 사용되지 않을 때도 GC 대상이 되지 않는다.<br> Map을 더이상 사용하지 않는다면, 메모리를 점유하고 있게 된다. 즉, 데이터의 메모리를 해제하는 것이 바람직합니다. WeakHashMap은 내부 데이터를 초기화할 수 있다.
-<br><br>
+<br><br><br>
 <b>3. Connection 사용 시 Try Catch 설계</b><br>
 아래의 경우 Connection을 생성했지만, try 내부에서 connection을 close하기 때문에, close가 실행되지 못한다.
 그래서 Connection이 열려있는 채로 메모리를 점유하게 된다.<br>

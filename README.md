@@ -1,18 +1,20 @@
 # -가비지 컬렉션(Garbage Collection) in Java-
 ## 목차
-#### 1. 가비지 컬렉션이란?
+#### 1. 가비지 컬렉션(GC)이란?
  (1) 정의<br>
  (2) 장단점(필요성)<br>
  (3) 가비지 컬렉션(GC) 대상<br>
  (4) 가비지 컬렉션(GC) 청소 방식(메커니즘)<br>
-#### 2. 가비지 컬렉션 동작 과정
+#### 2. 가비지 컬렉션(GC) 동작 과정
  (1) heap 메모리 구조<br>
  (2) Minor GC 과정<br>
  (3) Major GC 과정<br>
- 
+ (4) 일반적인 GC 과정<br>
+#### 3. 가비지 컬렉션(GC) 메모리 누수(Memory Leak)
+#### 4. 가비지 컬렉션(GC) 올바른 동작 코드
 <br>
 
-## 1. 가비지 컬렉션이란?
+## 1. 가비지 컬렉션(GC)이란?
 ### (1) 정의
 - 자바의 메모리 관리 방법 중 하나로 JVM(자바 가상 머신)의 Heap 영역에서 동적으로 할당했던 메모리 중 필요 없게 된 메모리 객체(garbage)를 모아 주기적으로 제거하는 프로세스를 말한다.
 - C/C++ 언어에서는 이러한 가비지 컬렉션이 없어 수동으로 메모리 할당과 해제를 해줘야한다.
@@ -71,7 +73,7 @@ GC 대상 객체를 식별(Mark)하고 제거(Sweep)하며 객체가 제거되�
 
 <br>
 
-## 2. 가비지 컬렉션 동작 과정
+## 2. 가비지 컬렉션(GC) 동작 과정
 ### (1) heap 메모리 구조
 <p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/c92e6136-dee1-4e78-a83b-cf402d19165e" width = "70%"></p><br>
 JVM의 힙(heap) 영역은 동적으로 레퍼런스 데이터가 저장되는 공간으로, 가비지 컬렉션에 대상이 되는 공간이다.<br>
@@ -174,10 +176,17 @@ Old Generation의 객체들은 거슬러 올라가면 처음에는 Young Generat
 
 ### (4) 일반적인 GC 과정
 ① 맨 처음 객체가 생성되면 Eden 영역에 생성<br>
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/e4eb9408-c399-4f33-b854-9691196f1956)
 
 ② 그리고 GC의 일종인 Minor GC가 발생하면 미사용 객체의 제거와 함께 아직 사용되고 있는 객체는 Survivor1, Survivor2 영역으로 이동시킴<br>
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/fb618ee2-6ddf-42b8-b076-7e967c828129)
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/4927d5bc-7385-4151-9849-6acfc32906c7)
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/3ac2b38f-7549-473b-ad90-4b4267749db1)
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/e0ccc54d-4c61-4173-b3a3-39668c059c4d)
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/51cbf701-027d-420b-85a8-a3fe4a6a1d59)
 
 단, 객체의 크기가 Survivor 영역의 크기보다 클 경우에는 바로 Old Generation으로 이동<br>
+![img1 daumcdn](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/f74e587b-7370-4071-8fc5-b3c0bcabc962)
 
 ③ 운영 특성 상, Survivor1과 Survivor2 영역은 둘 중 한 곳에만 객체가 존재하게끔 운영되며, 다른 한 곳은 비워져 있어야 함.<br>
 
@@ -187,6 +196,12 @@ Old Generation의 객체들은 거슬러 올라가면 처음에는 Young Generat
 
 ⑤ Old Generation 영역에서 살아남았던 객체들이 일정 수준 쌓이게 되면, 미사용으로 판단된 객체들을 제거해주는 Full GC가 발생. 이 과정에서 STW(Stop the World)가 발생하게 됨.<br>
 
+<br>
+
+## 3. 가비지 컬렉션(GC) 알고리즘
+1. R
+
 > [ 출처 ]<br>
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>
 > 티스토리 : <a href = "https://coding-factory.tistory.com/829">[Java] 가비지 컬렉션(GC, Garbage Collection) 총정리</a><br>
+> 티스토리 : <a href ="https://itkjspo56.tistory.com/285">[Java] 가비지 컬렉션 GC(Garbage Collection)의 동작원리와 동작하는 시점</a><br>

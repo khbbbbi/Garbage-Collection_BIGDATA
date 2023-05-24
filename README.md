@@ -359,7 +359,7 @@ public class MemoryLeakExample {
 <br>
 
 ## 4. 가비지 컬렉션(GC)-올바른 동작 코드
----------코드 참고!------------
+---------GCExample 폴더 > 코드 참고!------------
 
 <br>
 

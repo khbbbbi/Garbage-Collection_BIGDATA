@@ -109,9 +109,83 @@ Heap 영역은 처음 설계될 때 다음 2가지를 전제로 설계되었다.
 <br>
 
 ### (2) Minor GC 과정
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/cfe25013-4587-463e-af73-e7e8ce5439a5" width = "70%"></p><br>
 
+Young Generation 영역은 짧게 살아남는 메모리들이 존재하는 공간이다.<br>
+모든 객체는 처음에는 Young Generation에 생성되게 된다.<br>
+Young Generation의 공간은 Old Generation에 비해 상대적으로 작기 때문에 메모리 상의 객체를 찾아 제거하는데 적은 시간이 걸린다.(작은 공간에서 데이터를 찾으니까)<br><br>
+이 때문에 Young Generation 영역에서 발생되는 GC를 Minor GC라 불린다.<br>
+<br>
+① 처음 생성된 객체는 Young Generation 영역의 일부인 Eden 영역에 위치<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/0c49cedd-a6e9-4ab3-b016-43d7491b6cf2" width = "70%"><br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/bf193d9a-f5af-41d1-a67d-553b37cb3198" width = "70%"><br>
+
+② 객체가 계속 생성되어 Eden 영역이 꽉차게 되고 Minor GC가 실행<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/8a53fcc1-95dc-4fb1-86a7-87c91f2788bc" width = "70%"><br>
+
+③ Mark 동작을 통해 reachable 객체를 탐색<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/cde63103-f51d-42b6-a120-9ee2a469ead7" width = "70%"><br>
+
+④ Eden 영역에서 살아남은 객체는 1개의 Survivor 영역으로 이동<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/55a6fa69-f1bd-4b2d-8387-07554d1a109b" width = "70%"><br>
+
+⑤ Eden 영역에서 사용되지 않는 객체(unreachable)의 메모리를 해제(sweep)<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/998874ec-0c68-4689-8e77-ca2b501d110e" width = "70%"><br>
+
+⑥ 살아남은 모든 객체들은 age값이 1씩 증가<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/4a0acd32-f038-42a3-8bf7-44ec57c609bd" width = "70%"><br>
+
+⑦ 또다시 Eden 영역에 신규 객체들로 가득 차게 되면 다시한번 minor GC 발생하고 mark 한다<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/cea2ebe1-834b-45dc-a212-acb658230d9f" width = "70%"><br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/07cc73a4-4ce3-4f41-9046-aca1ced675af" width = "70%"><br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/236edaf2-c973-4c15-a4fe-fb50e5060b51" width = "70%"><br>
+
+⑧ marking 한 객체들을 비어있는 Survival 1으로 이동하고 sweep<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/4d9ed381-f833-46db-97f1-489e55a13c99" width = "70%"><br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/13368630-d5e8-41f1-a90d-19d7ab3efc90" width = "70%"><br>
+
+⑨ 다시 살아남은 모든 객체들은 age가 1씩 증가<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/c3a4c875-82b7-4ffd-94be-a88b9d85061d" width = "70%"><br>
+
+이러한 과정을 반복<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/5b069d78-b2ac-46e3-8d7f-575a35b21fff" width = "70%"><br>
+
+<br>
 
 ### (3) Major GC 과정
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/29a13510-23cc-4add-80d6-9d1e6823e782" width = "70%"></p><br>
+Old Generation은 길게 살아남는 메모리들이 존재하는 공간이다.<br>
+Old Generation의 객체들은 거슬러 올라가면 처음에는 Young Generation에 의해 시작되었으나, GC 과정 중에 제거되지 않은 경우 age 임계값이 차게되어 이동된 녀석들이다.<br>
+그리고 Major GC는 객체들이 계속 Promotion되어 Old 영역의 메모리가 부족해지면 발생하게 된다.<br>
+<br>
++Minor GC와 Major GC의 차이점<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/0aa65461-162e-47c7-b4b9-27f95b2e58e1" width = "50%"><br>
+<br>
+①객체의 age가 임계값(여기선 8로 설정)에 도달하게 되면,<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/56d67790-19f9-490f-b56e-33a2e172c63f" width = "70%"><br>
+
+② 이 객체들은 Old Generation 으로 이동된다. 이를 promotion 이라 부른다.<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/304a5536-eb6f-49fc-ae1d-aee381513e36" width = "70%"><br>
+
+③ 위의 과정이 반복되어 Old Generation 영역의 공간(메모리)가 부족하게 되면 Major GC가 발생되게 된다.<br>
+<img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/c79f75b5-b133-46b7-86fe-b7b053611a8c" width = "70%"><br>
+
+<br>
+
+### (4) 일반적인 GC 과정
+① 맨 처음 객체가 생성되면 Eden 영역에 생성<br>
+
+② 그리고 GC의 일종인 Minor GC가 발생하면 미사용 객체의 제거와 함께 아직 사용되고 있는 객체는 Survivor1, Survivor2 영역으로 이동시킴<br>
+
+단, 객체의 크기가 Survivor 영역의 크기보다 클 경우에는 바로 Old Generation으로 이동<br>
+
+③ 운영 특성 상, Survivor1과 Survivor2 영역은 둘 중 한 곳에만 객체가 존재하게끔 운영되며, 다른 한 곳은 비워져 있어야 함.<br>
+
+보통 From, To로 구분을 하며, 객체가 존재하는 Survivor영역(From)이 가득 차면 다른 Survivor 영역(To)로 보내고 기존의 Survivor 영역(From)을 비우는 작업을 진행.<br>
+
+④ 위 과정 (1~3번)을 반복하면서 Survivor 영역에서 계속 살아남은 객체들에게 일정 score가 누적이 되어 기준치 이상이 되면 Old Generation 영역으로 이동하게 됨(Promotion)<br>
+
+⑤ Old Generation 영역에서 살아남았던 객체들이 일정 수준 쌓이게 되면, 미사용으로 판단된 객체들을 제거해주는 Full GC가 발생. 이 과정에서 STW(Stop the World)가 발생하게 됨.<br>
 
 > [ 출처 ]<br>
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>

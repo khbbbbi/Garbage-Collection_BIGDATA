@@ -12,6 +12,8 @@
  (3) Major GC 과정<br>
  (4) 일반적인 GC 과정<br>
 #### 3. 가비지 컬렉션(GC) 메모리 누수(Memory Leak)
+ (1) 메모리 누수가 발생하는 패턴<br>
+ (2) 예제<br>
 #### 4. 가비지 컬렉션(GC)
 <br>
 
@@ -216,7 +218,7 @@ Old Generation의 객체들은 거슬러 올라가면 처음에는 Young Generat
 자바에서의 메모리 누수란 위에서도 말했듯 더 이상 사용되지 않는 객체들이 가비지 컬렉터에 의해 회수되지 않고 계속 누적이 되는 현상을 말한다.<br>
 Old 영역에 계속 누적된 객체로 인해 Major GC가 빈번하게 발생하게 되면서, 프로그램 응답속도가 늦어지면서 성능 저하를 불러온다. 이는 결국 OutOfMemory Error로 프로그램이 종료되게 된다.<br>
 <br>
-### < 메모리 누수가 발생하는 패턴 >
+### (1) 메모리 누수가 발생하는 패턴 
 <b>1. 무의미한 Wrapper 객체를 생성하는 경우</b><br>
 GC는 Immutable 객체를 Skip한다. 컨테이너 자체가 사라질 때 같이 삭제한다.<br>
 그래서 String은 StringBuilder와 달리 Immutable 객체이기 때문에 힙에 계속 쌓여서 메모리를 점유한다는 단점이 있다.
@@ -314,8 +316,45 @@ public int pop() {
     return element;
 }
 ```
+<br>
 
+### (2) 예제
+메모리 누수를 발생시키는 예제를 살펴보자!<br>
+```java
+public class MemoryLeakExample {
+    private static List<Object> objectList = new ArrayList<>();
 
+    public static void main(String[] args) {
+        while (true) {
+            Object obj = new Object();
+            objectList.add(obj);
+        }
+    }
+}
+```
+<br>
+위 코드에서는 MemoryLeakExample 클래스에서 objectList라는 정적 변수를 선언하고, 무한 반복문을 실행하면서 새로운 Object를 생성하여 objectList에 추가한다.<br>
+<br>
+반복문이 실행되면서 계속해서 새로운 Object가 생성되고 objectList에 추가되지만, 이 객체들은 더 이상 접근할 수 없는 상태로 남아있다. 가비지 컬렉터는 이러한 객체를 회수할 수 없기 때문에 메모리 누수가 발생한다.<br>
+<br>
+메모리 누수를 해결하기 위해서 명시적으로 불필요한 객체 참조를 해제해야 한다.<br>
+위의 코드에서는 objectList에 추가된 객체를 명시적으로 제거하지 않았기 때문에 메모리 누수가 발생했으므로 다음과 같이 수정할 수 있다!<br>
+
+```java
+public class MemoryLeakExample {
+    private static List<Object> objectList = new ArrayList<>();
+
+    public static void main(String[] args) {
+        while (true) {
+            Object obj = new Object();
+            objectList.add(obj);
+            objectList.remove(obj); // 객체 추가 후 바로 제거
+        }
+    }
+}
+```
+<br>
+위의 코드에서는 객체를 objectList에 추가한 후 즉시 제거하여 불필요한 객체 참조를 해제한다. 이렇게 하면 가비지 컬렉터가 누수된 객체를 회수할 수 있게 된다.<br>
 
 > [ 출처 ]<br>
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>

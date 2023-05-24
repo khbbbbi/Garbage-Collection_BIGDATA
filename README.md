@@ -4,11 +4,12 @@
  (1) 정의<br>
  (2) 장단점(필요성)<br>
  (3) 가비지 컬렉션(GC) 대상<br>
- (4) 가비지 컬렉션(GC) 청소 방식<br>
+ (4) 가비지 컬렉션(GC) 청소 방식(메커니즘)<br>
 #### 2. 가비지 컬렉션 동작 과정
- (1) JVM(Java Virtual Machine)<br>
- (2) 자바에서의 GC<br>
-
+ (1) heap 메모리 구조<br>
+ (2) Minor GC 과정<br>
+ (3) Major GC 과정<br>
+ 
 <br>
 
 ## 1. 가비지 컬렉션이란?
@@ -57,7 +58,7 @@ GC를 수행하기 위해 JVM이 프로그램 실행을 멈추는 현상을 의�
 
 <br>
 
-### (4) 가비지 컬렉션(GC) 청소 방식
+### (4) 가비지 컬렉션(GC) 청소 방식(메커니즘)
 - Mark And Sweep : GC에서 사용되는 객체를 골라내는 내부 알고리즘<br>
 GC 대상 객체를 식별(Mark)하고 제거(Sweep)하며 객체가 제거되어 파편화된 메모리 영역을 앞에서부터 채워나가는 작업(Compaction)을 수행하게 된다.
 <p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/63e0236f-d3b5-425b-8899-e0c5a1720511" width="70%"></p><br>
@@ -71,10 +72,46 @@ GC 대상 객체를 식별(Mark)하고 제거(Sweep)하며 객체가 제거되�
 <br>
 
 ## 2. 가비지 컬렉션 동작 과정
+### (1) heap 메모리 구조
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/c92e6136-dee1-4e78-a83b-cf402d19165e" width = "70%"></p><br>
+JVM의 힙(heap) 영역은 동적으로 레퍼런스 데이터가 저장되는 공간으로, 가비지 컬렉션에 대상이 되는 공간이다.<br>
+<br>
+Heap 영역은 처음 설계될 때 다음 2가지를 전제로 설계되었다.
+> 1. 대부분의 객체는 금방 접근 불가능한 상태(Unreachable)가 된다.
+> 2. 오래된 객체에서 새로운 객체로의 참조는 아주 적게 존재한다.
+<br>
+즉, 객체는 대부분 일회성이며, 메모리에 오랫동안 남아있는 경우는 드물다는 것이다.<br>
+<br>
+이러한 특성을 이용해 Heap 영역을 Young과 Old 총 2가지 영역으로 설계하였다.<br>
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/83f47f4f-c23c-4108-8683-d861a743a302" width = "70%"></p><br>
 
-
+```
+✏️ Old 영역이 Young 영역보다 크게 할당되는 이유는 Young 영역의 수명이 짧은 객체들은 큰 공간을 필요로 하지 않으며 큰 객체들은 Young 영역이 아니라 바로 Old 영역에 할당되기 때문!!
+```
 
 <br>
+
+#### < Young 영역 >
+- 새롭게 생성된 객체가 할당(Allocation)되는 영역
+- 대부분의 객체가 금방 Unreachable 상태가 되기 때문에, 많은 객체가 Young 영역에 생성되었다가 사라진다.
+- Young 영역에 대한 가비지 컬렉션(Garbage Collection)을 <b>Minor GC</b>라고 부른다.
+
+<br>
+
+#### < Old 영역 >
+- Young영역에서 Reachable 상태를 유지하여 살아남은 객체가 복사되는 영역
+- Young 영역보다 크게 할당되며, 영역의 크기가 큰 만큼 가비지는 적게 발생한다.
+- Old 영역에 대한 가비지 컬렉션(Garbage Collection)을 <b>Major GC 또는 Full GC</b>라고 부른다.
+<br>
+또 다시 힙 영역은 더욱 효율적인 GC를 위해 Young 영역을 3가지 영역(Eden, survivor 0, survivor 1) 으로 나눈다.<br>
+<p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/d57286a1-08d7-40df-a5ac-88e307b1561f" width = "70%"></p><br>
+이렇게 하나의 힙 영역을 세부적으로 쪼갬으로서 객체의 생존 기간을 면밀하게 제어하여 가비지 컬렉터(GC)를 보다 정확하게 불필요한 객체를 제거하는 프로세스를 실행하도록 한다.<br>
+<br>
+
+### (2) Minor GC 과정
+
+
+### (3) Major GC 과정
 
 > [ 출처 ]<br>
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>

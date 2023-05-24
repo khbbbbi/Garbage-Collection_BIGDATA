@@ -66,8 +66,14 @@ GC 대상 객체를 식별(Mark)하고 제거(Sweep)하며 객체가 제거되�
  - Sweep 과정 : 참조하고 있지 않은 객체 즉 Unreachable 객체들을 Heap에서 제거한다.
  - Compact 과정 : Sweep 후에 분산된 객체들을 Heap의 시작 주소로 모아 메모리가 할당된 부분과 그렇지 않은 부분으로 압축한다. (가비지 컬렉터 종류에 따라 하지 않는 경우도 있다.)
 <br>
+
 <p align="center"><img src = "https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/0d1073a0-cf6e-4fa4-b29f-929bc0b84420" width="70%"></p><br>
+
 <br>
+
+![image](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/7cba337e-d071-4d06-a89c-26298a1d8e3c)
+
+![image](https://github.com/khbbbbi/Garbage-Collection_BIGDATA/assets/102509150/087f48af-259c-44b6-810d-d1caca05f126)
 
 
 ## 2. 가비지 컬렉션 장단점

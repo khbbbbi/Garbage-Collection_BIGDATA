@@ -399,8 +399,7 @@ public class MemoryLeakExample {
 > 유튜브 : <a href = "https://youtu.be/jXF4qbZQnBc">자바의 메모리 관리 방법! 가비지 컬렉션[자바 기초 강의]</a><br>
 > 티스토리 : <a href = "https://coding-factory.tistory.com/829">[Java] 가비지 컬렉션(GC, Garbage Collection) 총정리</a><br>
 > 티스토리 : <a href ="https://itkjspo56.tistory.com/285">[Java] 가비지 컬렉션 GC(Garbage Collection)의 동작원리와 동작하는 시점</a><br>
-> 티스토리 : <a href = "https://junghyungil.tistory.com/133">[JAVA] 메모리 누수(Memory Leak)와 GC 성능 튜닝</a>
-> 티스토리 : <a href = "https://jinniedev.tistory.com/53">Java 메모리 누수(Memory Leak), GC 튜닝</a>
-> 티스토리 : <a href = "https://inpa.tistory.com/entry/JAVA-%E2%98%95-%EA%B0%80%EB%B9%84%EC%A7%80-%EC%BB%AC%EB%A0%89%EC%85%98GC-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%F0%9F%92%AF-%EC%B4%9D%EC%A0%95%EB%A6%AC">가비지 컬렉션 동작 원리 & GC 종류 💯 총정리
-</a>
+> 티스토리 : <a href = "https://junghyungil.tistory.com/133">[JAVA] 메모리 누수(Memory Leak)와 GC 성능 튜닝</a><br>
+> 티스토리 : <a href = "https://jinniedev.tistory.com/53">Java 메모리 누수(Memory Leak), GC 튜닝</a><br>
+> 티스토리 : <a href = "https://inpa.tistory.com/entry/JAVA-%E2%98%95-%EA%B0%80%EB%B9%84%EC%A7%80-%EC%BB%AC%EB%A0%89%EC%85%98GC-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%F0%9F%92%AF-%EC%B4%9D%EC%A0%95%EB%A6%AC">가비지 컬렉션 동작 원리 & GC 종류 💯 총정리</a><br>
 > chatgpt
